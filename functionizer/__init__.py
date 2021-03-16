@@ -7,7 +7,7 @@ from IPython.core import magic_arguments
 import re
 
 @magics_class
-class FunctionalizerMagics(Magics):
+class FunctionizerMagics(Magics):
 
     @magic_arguments.magic_arguments()
     @magic_arguments.argument("--as_dict", action="store_true", default=False, help="return as a dictionary")
@@ -19,8 +19,8 @@ class FunctionalizerMagics(Magics):
     @magic_arguments.argument("--return_last", action="store_true", default=False, help="return last line. will override -r")
     @magic_arguments.argument("fn", type=str, help="function name")
     @cell_magic
-    def functionalize(self, line, cell):
-        args = magic_arguments.parse_argstring(self.functionalize, line)
+    def functionize(self, line, cell):
+        args = magic_arguments.parse_argstring(self.functionize, line)
         fn = args.fn
         func_args = args.args or []
         ret = args.ret or []
@@ -75,4 +75,4 @@ class FunctionalizerMagics(Magics):
 
 
 def load_ipython_extension(ipython):
-    ipython.register_magics(FunctionalizerMagics)
+    ipython.register_magics(FunctionizerMagics)

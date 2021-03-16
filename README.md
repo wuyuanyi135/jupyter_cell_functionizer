@@ -52,7 +52,7 @@ process can be automated by this magic.
 # Usage
 1. Load the extension
 ```
-%load_ext functionalizer
+%load_ext functionizer
 ```
 2. Write some codes
 ```
