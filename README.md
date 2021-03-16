@@ -108,7 +108,7 @@ still be effective in this mode to ensure the cell can execute consistently.
 ## Skip cell execution `--skip`
 Do not run the cell but only create the function only.
 
-## Drop the last line `--skip_last'
+## Drop the last line `--skip_last`
 Drop the last non-blank line in the cell. This is useful the last line of the cell is an expression that outputs 
 some information, and you do not want to keep it after functionization.
 
