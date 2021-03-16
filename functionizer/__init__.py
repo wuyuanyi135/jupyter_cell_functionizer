@@ -9,6 +9,34 @@ import re
 @magics_class
 class FunctionizerMagics(Magics):
 
+    def check_variable_exists(self, name, exception=False):
+        existing = name in self.shell.user_global_ns
+        if not existing and exception:
+            raise RuntimeError(f"{name} does not exist in the namespace")
+        return existing
+
+    def process_argument_list(self, arg_list):
+
+        kwargs = []
+        pargs = []
+        for arg in arg_list:
+            arg: str
+            if arg.endswith("!"):
+                # expand as keyword argument
+                arg = arg[:-1] # remove the trailing exclamation
+                kwargs.append(f"{arg}={arg}")
+                self.check_variable_exists(arg, True)
+
+            elif "=" in arg:
+                kwargs.append(arg)
+
+            elif arg.isidentifier():
+                pargs.append(arg)
+
+            else:
+                raise ValueError(f"'{arg}' is not a valid argument name.")
+        return pargs, kwargs
+
     @magic_arguments.magic_arguments()
     @magic_arguments.argument("--as_dict", action="store_true", default=False, help="return as a dictionary")
     @magic_arguments.argument("-a", "--args", type=str, nargs="+", help="arguments")
@@ -30,12 +58,20 @@ class FunctionizerMagics(Magics):
         as_dict = args.as_dict
         shell = self.shell
 
+        if skip_last and return_last:
+            raise UserWarning("Using skip_last and return_last together is not recommended.")
+
+        pargs, kwargs = self.process_argument_list(func_args)
+
+        # Apply the assignment of the kwargs for before executing the cell
+        assignment_code = "\n".join(kwargs) + "\n"
+
         if args.disable:
+            shell.run_cell(assignment_code)
             shell.run_cell(cell)
 
-
-        arg_sig = ",".join(func_args)
-
+        all_args = pargs + kwargs
+        arg_sig = ",".join(all_args)
 
         lines = cell.splitlines()
 
@@ -70,7 +106,7 @@ class FunctionizerMagics(Magics):
             f'{indent_cell}\n'
         )
 
-        combined = function_def if skip else function_def + cell
+        combined = function_def if skip else assignment_code + function_def + cell
         shell.run_cell(combined)
 
 
