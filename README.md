@@ -1,5 +1,5 @@
 # Jupyter/IPython Cell Functionizer
-A cell magic that convert the cell into a function for code reuse.
+A cell magic that converts the cell into a function for code reuse.
 
 # Installation
 ```
@@ -7,7 +7,7 @@ pip install jupyter-cell-functionizer
 ```
 
 # Use case
-Imaging that you are working on some data processing project. You use the first cell to define the parameters:
+Imaging that you are working on a data processing project. You use the first cell to define the parameters:
 ```python
 a = 1
 b = 2
