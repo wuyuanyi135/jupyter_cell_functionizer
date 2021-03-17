@@ -78,7 +78,7 @@ class FunctionizerMagics(Magics):
         # purge empty lines
         while True:
             last_line = lines[-1]
-            if re.match(r"\S+", last_line) or not lines:
+            if re.search(r"\S+", last_line) or not lines:
                 # is not empty
                 break
             lines.pop(-1)
