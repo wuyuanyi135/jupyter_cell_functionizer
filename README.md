@@ -1,15 +1,20 @@
-# IPython Cell Functionizer
-A cell magic that convert the cell into a function for code reuse.
+# Jupyter/IPython Cell Functionizer
+A cell magic that converts the cell into a function for code reuse.
+
+# Installation
+```
+pip install jupyter-cell-functionizer
+```
 
 # Use case
-Imaging that you are working on some data processing project. You use the first cell to define the parameters:
-```
+Imaging that you are working on a data processing project. You use the first cell to define the parameters:
+```python
 a = 1
 b = 2
 ...
 ```
 The processing logics are written in the next cell
-```
+```python
 # process
 result = (a**2 + b**2) ** 1/2
 # visualize
@@ -17,12 +22,12 @@ result = (a**2 + b**2) ** 1/2
 ```
 
 Later you want to try a different set of parameters. You have to copy and paste the cells and make the little changes.
-```
+```python
 a = 2
 b = 3
 ...
 ```
-```
+```python
 # process
 result = (a**2 + b**2) ** 1/2
 # visualize
@@ -31,7 +36,7 @@ result = (a**2 + b**2) ** 1/2
 
 If you want to modify the processing logics, you have to apply the change to all duplications. The straightforward 
 solution is to wrapping the code in a function block
-```
+```python
 def process(a, b):
     result = (a**2 + b**2) ** 1/2
     # visualize
@@ -51,24 +56,24 @@ process can be automated by this magic.
 
 # Usage
 1. Load the extension
-```
+```python
 %load_ext functionizer
 ```
 2. Write some codes
-```
+```python
 # parameter cell
 last_name = "W"
 first_name = "Y"
 ```
 
-```
+```python
 # processing cell
 name = first_name + " " + last_name
 name
 ```
 3. Convert the processing cell with the magic. The first argument defines the function name. The `-a` defines the 
    list of the function arguments. The `-r` defines the return list.
-```
+```python
 %%functionize get_name -a first_name last_name -r name
 name = first_name + " " + last_name
 name
@@ -76,7 +81,7 @@ name
 
 4. After this cell is executed, a function `get_name` is also defined that takes the arguments you defined and 
    return the variable you requested.
-```
+```python
 get_name("New name", "B")
 ```
 
@@ -98,8 +103,8 @@ If the name ends with `!`, it will be expanded to the keyword argument using the
 global scope. For example, `-a hello!` will be expaneded to `-a hello=hello`. This allows quick reuse of the 
 previously defined variables in the function's scope.
 
-## Return arguments `-r, --ret`
-The variable names being returned. Multiple return values are separated by space.
+## Return values `-r, --ret`
+The variable being returned. Multiple return values are separated by space.
 
 ## Disable functionization `-d, --disable`
 Do not create the function of the cell. Only execute the cell as-is. Note that the keyword argument assignment will 
